@@ -14,10 +14,7 @@
       rel="stylesheet" />
     <style>
       body {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        margin: 0; /* Remove default margin */
+        margin: 0;
         background-color: #f0f0f0; /* Optional: background color for the body */
       }
 
@@ -65,7 +62,7 @@
         font-size: 40px; /* Adjust font size as needed */
         font-weight: bold;
         border-radius: 4px; /* Optional: rounded corners for buttons */
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Button shadow */
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.6); /* Button shadow */
         transition: box-shadow 0.3s ease;
       }
       .letter:hover {
@@ -176,6 +173,7 @@
         align-items: center;
         background: linear-gradient(to right, #cdffd8, #94b9ff);
         padding: 10px 20px;
+        margin-bottom: 40px;
       }
 
       /* Navigation links */
@@ -251,6 +249,124 @@
         height: 50px; /* Adjust image height as needed */
         margin-right: 10px; /* Space between image and text */
       }
+
+      .adjusted-image {
+        width: 700px; /* Adjust width as needed */
+        height: auto; /* Maintain aspect ratio */
+        display: block;
+      }
+
+      .letters-overlay {
+        position: absolute;
+        top: 100px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px; /* Space between letters */
+      }
+
+      .image-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .sound-container {
+        position: absolute;
+        top: 140px; /* Adjust position as needed */
+        left: 40%;
+        transform: translateX(-50%);
+        /* border-radius: 50%; Optional: make it circular */
+        padding: 5px; /* Optional: add some padding */
+        background-color: white; /* Optional: background color for better shadow visibility */
+        border-radius: 4px; /* Optional: rounded corners for buttons */
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.6); /* Button shadow */
+        transition: box-shadow 0.3s ease;
+        z-index: 10;
+      }
+      .sound-container:hover {
+        background-color: #e5fafe; /* Change background color on hover */
+        cursor: pointer;
+      }
+
+      .sound-icon {
+        width: 40px; /* Adjust width as needed */
+        height: 40px; /* Adjust height as needed */
+        margin: 15px;
+      }
+
+      .equal-sign {
+        position: absolute;
+        top: 48%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 80px; /* Adjust font size as needed */
+        font-weight: bold;
+      }
+
+      .empty-container {
+        position: absolute;
+        top: 140px; /* Adjust position as needed */
+        left: 55%;
+        width: 80px; /* Adjust width as needed */
+        height: 85px; /* Adjust height as needed */
+        background-color: white; /* Optional: background color for better shadow visibility */
+        border-radius: 4px; /* Optional: rounded corners for buttons */
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.6);
+        /* box-shadow: 4px 4px 10px rgba(255, 20, 20, 0.6); */
+        /* box-shadow: 4px 4px 10px rgba(0, 255, 0, 0.6); */
+        transition: box-shadow 0.3s ease;
+        font-size: 40px; /* Adjust font size as needed */
+        font-weight: bold;
+        display: flex; /* Use flexbox */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+      }
+
+      .toast {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        display: none;
+        z-index: 1000;
+        font-size: 20px;
+        text-align: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        animation: fadein 0.5s, fadeout 0.5s 1.5s;
+        max-width: 300px;
+      }
+      .toast.correct {
+        background-color: green;
+      }
+      .toast.incorrect {
+        background-color: red;
+      }
+      @keyframes fadein {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes fadeout {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
     </style>
   </head>
   <body>
@@ -274,23 +390,39 @@
       </div>
     </div>
 
-    <!-- Placeholder content to demonstrate scrolling -->
-    <!-- <div id="home" class="content-section">
-      <h2>Home Section</h2>
-      <p>Content for the Home section goes here.</p>
-    </div> -->
     <div id="about" class="content-section">
       <h2>About Us Section</h2>
       <p>Content for the About Us section goes here.</p>
-    </div>
-    <div id="assessment" class="content-section">
-      <h2>Assessment Section</h2>
-      <p>Content for the Assessment section goes here.</p>
     </div>
     <div id="contact" class="content-section">
       <h2>Contact Us Section</h2>
       <p>Content for the Contact Us section goes here.</p>
     </div>
+
+    <div class="container-wrapper">
+      <div class="container content-section" id="assessment">
+        <div class="label">Vowel Sounds</div>
+        <div class="image-container">
+          <img src="./img/dialogue.png" alt="dialogue" class="adjusted-image" />
+          <div class="sound-container">
+            <img
+              src="./img/sound icon.png"
+              alt="sound icon"
+              class="sound-icon" />
+          </div>
+          <div class="equal-sign">=</div>
+          <div class="empty-container"></div>
+          <div class="letters-overlay">
+            <div class="letter" data-letter="c">C</div>
+            <div class="letter" data-letter="d">D</div>
+            <div class="letter" data-letter="f">F</div>
+            <div class="letter" data-letter="g">G</div>
+            <div class="letter" data-letter="h">H</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="toast" id="toast">Correct!</div>
 
     <div class="container-wrapper">
       <div class="container content-section" id="home">
@@ -339,7 +471,7 @@
     <!-- Video element -->
     <iframe
       id="popupVideo"
-      src="https://drive.google.com/file/d/1YKyzm3OZVhRcIungVTCtYmt2PRbi0FbA/preview"
+      src="https://drive.google.com/file/d/1YVTCtYmt2PRbi0FbA/preview"
       width="640"
       height="480"
       llow="autoplay; encrypted-media"
@@ -352,5 +484,6 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"></script>
   <script src="audio.js"></script>
+  <script src="assessment.js"></script>
   <script src="index.js"></script>
 </html>

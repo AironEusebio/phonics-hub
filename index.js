@@ -27,6 +27,77 @@ document.querySelector(".sound-btn").addEventListener("click", function () {
   }
 });
 
+let currentSound = null;
+let currentLetter = null;
+let isCorrect = null;
+
+function getRandomConsonant() {
+  const randomIndex = Math.floor(
+    Math.random() * assessConsonants.consonants.length
+  );
+  return assessConsonants.consonants[randomIndex];
+}
+
+function playAssessSound() {
+  if (currentSound) {
+    currentSound.play();
+  } else {
+    const consonant = getRandomConsonant();
+    currentLetter = consonant.letter;
+    currentSound = new Howl({
+      src: [consonant.audio],
+    });
+    currentSound.play();
+  }
+}
+
+function showToast(message, isCorrect) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.toggle("correct", isCorrect);
+  toast.classList.toggle("incorrect", !isCorrect);
+  toast.style.display = "block";
+  setTimeout(() => {
+    document.querySelector(".empty-container").innerHTML = "";
+    toast.style.display = "none";
+  }, 2000);
+}
+
+document
+  .querySelector(".sound-container")
+  .addEventListener("click", playAssessSound);
+
+document
+  .querySelectorAll(".letters-overlay .letter")
+  .forEach((letterElement) => {
+    letterElement.addEventListener("click", (event) => {
+      if (currentLetter == null) {
+        isCorrect = new Howl({
+          src: "./audio/incorrect.mp3",
+        });
+        isCorrect.play();
+        showToast("Click sound first!", false);
+      } else {
+        const clickedLetter = event.target.textContent;
+        document.querySelector(".empty-container").innerHTML = currentLetter;
+        if (clickedLetter === currentLetter) {
+          isCorrect = new Howl({
+            src: "./audio/correct.mp3",
+          });
+
+          showToast("Correct!", true);
+        } else {
+          isCorrect = new Howl({
+            src: "./audio/incorrect.mp3",
+          });
+          showToast(`Incorrect! Correct letter: ${currentLetter}`, false);
+        }
+        isCorrect.play();
+        currentSound = null;
+      }
+    });
+  });
+
 function playSound(audioFile) {
   if (!sounds[audioFile]) {
     // Create a new Howl instance if it doesn't exist
