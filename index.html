@@ -9,17 +9,35 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
       rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet" />
     <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0; /* Remove default margin */
+        background-color: #f0f0f0; /* Optional: background color for the body */
+      }
+
+      .container-wrapper {
+        flex: 1; /* Take up remaining space */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
       .container {
         display: flex;
         flex-direction: column;
         align-items: flex-start; /* Align items to the left */
         width: 800px; /* Adjust width as needed */
-        margin: 0 auto;
-        border: 2px solid blue; /* Border color and thickness */
+        border: 5px solid #0cc0df; /* Border color and thickness */
         padding: 30px; /* Space inside the border */
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         border-radius: 8px; /* Rounded corners */
+        background-color: white; /* Optional: background color for the container */
       }
       .block {
         display: flex;
@@ -59,7 +77,8 @@
       }
       .label {
         font-family: "Open Sans";
-        font-size: 50px;
+        font-size: 39px;
+        font-weight: 70;
         margin-bottom: 5px; /* Space between label and block */
       }
       .modal {
@@ -68,22 +87,22 @@
         z-index: 1; /* Sit on top */
         left: 0;
         top: 0;
-        width: 100%;
-        height: 100%;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
         overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0); /* Fallback color */
         background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-        justify-content: center;
-        align-items: center;
       }
+
+      /* Modal content */
       .modal-content {
-        background-color: white;
+        background-color: #fefefe;
         margin: 15% auto; /* 15% from the top and centered */
         padding: 20px;
         border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */
-        max-width: 400px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        width: 30%; /* Could be more or less, depending on screen size */
         border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
       }
       .close {
         color: #aaa;
@@ -91,27 +110,39 @@
         font-size: 28px;
         font-weight: bold;
       }
+
       .close:hover,
       .close:focus {
-        color: black;
+        color: #000;
         text-decoration: none;
         cursor: pointer;
       }
+
+      /* Consonant letter styling */
+      #consonantLetter {
+        font-family: "Raleway";
+        text-align: center;
+        font-size: 150px; /* Larger font size */
+        font-weight: bold;
+        margin: 20px 0;
+      }
+
+      /* Sound button styling */
       .sound-btn {
         display: block;
-        margin: 20px auto; /* Center the button horizontally */
-        padding: 10px 20px; /* Padding inside the button */
-        font-size: 20px; /* Font size of the button text */
-        background-color: #4caf50; /* Green background color */
-        color: white; /* Text color */
-        border: none; /* Remove border */
-        border-radius: 4px; /* Rounded corners */
-        cursor: pointer; /* Cursor style on hover */
-        transition: background-color 0.3s ease; /* Smooth background color transition */
+        margin: 0 auto; /* Center the button */
+        padding: 10px 20px;
+        background-color: #0cc0df; /* Button color */
+        border: none;
+        border-radius: 4px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease; /* Smooth transition for hover effect */
       }
 
       .sound-btn:hover {
-        background-color: #45a049; /* Darker green on hover */
+        background-color: #0094b8; /* Darker shade on hover */
       }
 
       #popupVideo {
@@ -143,22 +174,30 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: #333;
+        background: linear-gradient(to right, #cdffd8, #94b9ff);
         padding: 10px 20px;
       }
 
       /* Navigation links */
       .navbar a {
-        color: white;
+        color: black;
+        font-family: "Raleway";
+        font-weight: bold;
         text-decoration: none;
         padding: 14px 20px;
         display: block;
+        font-family: "Raleway", sans-serif; /* Apply Raleway to navigation links */
+        transition: color 0.3s ease, background-color 0.3s ease; /* Smooth color transition */
       }
 
       /* Logo styling */
       .navbar .logo {
+        display: flex;
+        align-items: center;
         font-size: 24px;
+        color: black;
         font-weight: bold;
+        font-family: "Raleway", sans-serif; /* Apply Raleway to the logo */
       }
 
       /* Links container */
@@ -184,16 +223,22 @@
       .navbar .search-container button {
         padding: 6px 10px;
         margin-left: 5px;
-        background-color: #ddd;
+        background-color: #cdffd8; /* Same gradient as navbar */
         border: none;
         border-radius: 4px;
         cursor: pointer;
+        transition: background-color 0.3s ease; /* Smooth transition for hover effect */
       }
 
       /* Change color on hover */
-      .navbar a:hover,
+      .navbar a:hover {
+        font-family: "Raleway";
+        font-weight: bold;
+        color: #94b9ff; /* Change text color on hover */
+      }
+
       .navbar .search-container button:hover {
-        background-color: #575757;
+        background-color: #9affab; /* Change to a single color on hover */
       }
 
       /* Content sections hidden by default */
@@ -201,12 +246,20 @@
         display: none;
         padding: 20px;
       }
+
+      .navbar .logo img {
+        height: 50px; /* Adjust image height as needed */
+        margin-right: 10px; /* Space between image and text */
+      }
     </style>
   </head>
   <body>
     <div class="navbar">
       <!-- Logo -->
-      <div class="logo">MyWebsite</div>
+      <div class="logo">
+        <img src="./img/Logo.jpeg" alt="Logo" />
+        Phonics Hub
+      </div>
       <!-- Navigation Links -->
       <div class="nav-links">
         <a href="#home" onclick="showSection('home')">Home</a>
@@ -239,33 +292,35 @@
       <p>Content for the Contact Us section goes here.</p>
     </div>
 
-    <div class="container content-section" id="home">
-      <div class="label">Vowels</div>
-      <div class="block vowels">
-        <button class="letter">A</button>
-        <button class="letter">E</button>
-        <button class="letter">I</button>
-        <button class="letter">O</button>
-        <button class="letter">U</button>
-      </div>
-      <div class="label">Consonants</div>
-      <div class="block consonants">
-        <button class="letter">C</button>
-        <button class="letter">D</button>
-        <button class="letter">F</button>
-        <button class="letter">G</button>
-        <button class="letter">H</button>
-        <button class="letter">J</button>
-        <button class="letter">K</button>
-        <button class="letter">M</button>
-        <button class="letter">N</button>
-        <button class="letter">P</button>
-        <button class="letter">R</button>
-        <button class="letter">S</button>
-        <button class="letter">T</button>
-        <button class="letter">X</button>
-        <button class="letter">Y</button>
-        <button class="letter">Z</button>
+    <div class="container-wrapper">
+      <div class="container content-section" id="home">
+        <div class="label">Vowels Sounds</div>
+        <div class="block vowels">
+          <button class="letter">A</button>
+          <button class="letter">E</button>
+          <button class="letter">I</button>
+          <button class="letter">O</button>
+          <button class="letter">U</button>
+        </div>
+        <div class="label">Consonants Sounds</div>
+        <div class="block consonants">
+          <button class="letter">C</button>
+          <button class="letter">D</button>
+          <button class="letter">F</button>
+          <button class="letter">G</button>
+          <button class="letter">H</button>
+          <button class="letter">J</button>
+          <button class="letter">K</button>
+          <button class="letter">M</button>
+          <button class="letter">N</button>
+          <button class="letter">P</button>
+          <button class="letter">R</button>
+          <button class="letter">S</button>
+          <button class="letter">T</button>
+          <button class="letter">X</button>
+          <button class="letter">Y</button>
+          <button class="letter">Z</button>
+        </div>
       </div>
     </div>
     <!-- The Modal -->
