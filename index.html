@@ -95,6 +95,19 @@
         background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
       }
 
+      .videoModal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
+      }
+
       /* Modal content */
       .modal-content {
         background-color: #fefefe;
@@ -128,6 +141,10 @@
         margin: 20px 0;
       }
 
+      .para {
+        font-family: "Raleway";
+      }
+
       /* Sound button styling */
       .sound-btn {
         display: block;
@@ -153,7 +170,9 @@
         left: 50%;
         transform: translate(-50%, -50%);
         z-index: 9999;
-        background-color: rgba(0, 0, 0, 0.8);
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
       }
 
       .closeButton {
@@ -491,6 +510,17 @@
       .clicked-letters-container {
         display: flex;
       }
+
+      .image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .image img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px; /* Optional: Add border radius for rounded corners */
+      }
     </style>
   </head>
   <body>
@@ -502,10 +532,24 @@
       </div>
       <!-- Navigation Links -->
       <div class="nav-links">
-        <a href="#home" onclick="showSection('home')" class="active">Home</a>
-        <a href="#about" onclick="showSection('about')">About Us</a>
-        <a href="#assessment" onclick="showSection('assessment')">Assessment</a>
-        <a href="#contact" onclick="showSection('contact')">Contact Us</a>
+        <a href="#home" onclick="showSection('home')" class="active nav-links"
+          >Home</a
+        >
+        <a
+          href="#assessment"
+          onclick="showSection('assessment')"
+          class="nav-links"
+          >Assessment</a
+        >
+        <a href="#about us" onclick="showSection('about us')" class="nav-links"
+          >About Us</a
+        >
+        <a
+          href="#contact us"
+          onclick="showSection('contact us')"
+          class="nav-links"
+          >Contact Us</a
+        >
       </div>
       <!-- Search Bar -->
       <div class="search-container">
@@ -514,13 +558,44 @@
       </div>
     </div>
 
-    <div id="about" class="content-section">
-      <h2>About Us Section</h2>
-      <p>Content for the About Us section goes here.</p>
+    <div class="container-wrapper">
+      <div id="about us" class="container content-section">
+        <p>
+          <strong>Phonics Hub</strong> were developed by 3rd year students from
+          English Education student at Bulacan State University-Bustos Campus.
+          This website consists of language resources specifically designed to
+          aid grade 7 students in learning phonemes through video lessons.
+        </p>
+
+        <div class="image">
+          <img src="./img/team.jpg" alt="phonics hub team" />
+        </div>
+      </div>
     </div>
-    <div id="contact" class="content-section">
-      <h2>Contact Us Section</h2>
-      <p>Content for the Contact Us section goes here.</p>
+
+    <div class="container-wrapper">
+      <div id="contact us" class="container content-section para">
+        <h2>Dear Users of Phonics Hub,</h2>
+        <p>
+          We are excited to have you as our fellow member in Phonics Hub! Your
+          commitment to bettering your literacy skills is really encouraging and
+          we will be there to help you all the way. <br /><br />
+          Don't hesitate to contact us if you have any questions, comments or
+          worries. Get in touch with us through these methods: <br /><br />
+          <strong>1. Email:</strong> To inquire about anything or get help, send
+          an email to phonicshub0@gamil.com. We will always strive to reply your
+          email as fast as possible since we have committed ourselves towards
+          this goal. <br /><br />
+          <strong>2. Phone:</strong> For those who like talking with an agent
+          through the phone, they can reach our customer care through
+          09946089887. Those team members who are approachable will be glad to
+          offer help relating to any problems you might have. <br /><br />
+          We take your feedback seriously and make sure you receive a good
+          experience on Phonics Hub. Achieving success for you is what we
+          prioritize over everything else, that is why we stand by ready to
+          assisst you achieve your literacy goals.
+        </p>
+      </div>
     </div>
 
     <div class="container-wrapper">
@@ -596,11 +671,11 @@
       <div class="container content-section" id="home">
         <div class="label">Vowels Sounds</div>
         <div class="block vowels">
-          <button class="letter">A</button>
-          <button class="letter">E</button>
-          <button class="letter">I</button>
-          <button class="letter">O</button>
-          <button class="letter">U</button>
+          <button class="letter" onclick="playVideo('A')">A</button>
+          <button class="letter" onclick="playVideo('E')">E</button>
+          <button class="letter" onclick="playVideo('I')">I</button>
+          <button class="letter" onclick="playVideo('O')">O</button>
+          <button class="letter" onclick="playVideo('U')">U</button>
         </div>
         <div class="label">Consonants Sounds</div>
         <div class="block consonants">
@@ -635,16 +710,17 @@
     </div>
 
     <!-- Close button -->
-    <button class="closeButton" onclick="closePopup()">Close</button>
+    <div class="videoModal">
+      <button class="closeButton" onclick="closePopup()">Close</button>
 
-    <!-- Video element -->
-    <iframe
-      id="popupVideo"
-      src="https://drive.google.com/file/d/1YVTCtYmt2PRbi0FbA/preview"
-      width="640"
-      height="480"
-      llow="autoplay; encrypted-media"
-      allowfullscreen></iframe>
+      <!-- Video element -->
+      <iframe
+        id="popupVideo"
+        width="640"
+        height="480"
+        llow="autoplay; encrypted-media"
+        allowfullscreen></iframe>
+    </div>
   </body>
 
   <script

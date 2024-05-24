@@ -31,8 +31,25 @@ document.querySelector(".sound-btn").addEventListener("click", function () {
   }
 });
 
+let counterAssess1 = new Set();
+
 function getRandomConsonant() {
-  const randomIndex = Math.floor(Math.random() * assessVowels.vowels.length);
+  let randomIndex;
+
+  // Check if the Set has reached the size of the vowels array
+  if (counterAssess1.size >= assessVowels.vowels.length) {
+    counterAssess1.clear(); // Clear the Set if all indices have been used
+  }
+
+  // Generate a new random index until it's not in the Set
+  do {
+    randomIndex = Math.floor(Math.random() * assessVowels.vowels.length);
+  } while (counterAssess1.has(randomIndex));
+
+  // Add the new random index to the Set
+  counterAssess1.add(randomIndex);
+
+  // Return the consonant at the generated random index
   return assessVowels.vowels[randomIndex];
 }
 
@@ -134,18 +151,34 @@ vowelButtons.forEach(function (button) {
 });
 
 function closePopup() {
+  const iframe = document.getElementById("popupVideo");
+  iframe.src = ""; // Resetting src stops the video
   document.querySelector("#popupVideo").style.display = "none";
   document.querySelector(".closeButton").style.display = "none";
+  document.querySelector(".videoModal").style.display = "none";
 }
 
 function showSection(sectionId) {
   // Hide all sections
+
   document.querySelectorAll(".content-section").forEach((section) => {
     section.style.display = "none";
   });
 
   // Show the selected section
   document.getElementById(sectionId).style.display = "block";
+  const section = document.querySelectorAll(".nav-links");
+  section.forEach((section) => section.classList.remove("active"));
+
+  const navLinks = document.querySelectorAll(".nav-links");
+
+  navLinks.forEach((link) => {
+    if (link.textContent.toLowerCase() == sectionId.toLowerCase()) {
+      link.classList.add("active");
+    }
+  });
+
+  document.querySelector(".nav-links").classList.add("active");
 }
 
 function addLetterClickListeners() {
@@ -218,7 +251,6 @@ function addLetterClickListeners() {
             letter.classList.remove("disabled", "in-line");
           });
 
-          console.log(currentWord);
           const currentQuestionWord = Array.from(
             assessmentPart2.questions[currentQuestionIndex].word
           ).join("");
@@ -229,9 +261,7 @@ function addLetterClickListeners() {
             });
 
             showToast("Correct!", true, true);
-            populateLettersOverlay(
-              Math.floor(Math.random() * assessmentPart2.questions.length)
-            );
+            populateLettersOverlay();
           } else {
             isCorrect = new Howl({
               src: "./audio/incorrect.mp3",
@@ -249,28 +279,50 @@ addLetterClickListeners();
 
 let currentQuestionIndex = 0;
 
-// Populate the letters-overlay-second container with one question's letters
-function populateLettersOverlay(questionIndex) {
+let usedQuestionIndices = new Set();
+
+function getRandomQuestionIndex(max) {
+  let randomIndex;
+
+  // If the Set contains all possible indices, clear it to start fresh
+  if (usedQuestionIndices.size >= max) {
+    usedQuestionIndices.clear();
+  }
+
+  // Generate a new random index until it's not in the Set
+  do {
+    randomIndex = Math.floor(Math.random() * max);
+  } while (usedQuestionIndices.has(randomIndex));
+
+  // Add the new random index to the Set
+  usedQuestionIndices.add(randomIndex);
+
+  return randomIndex;
+}
+
+function populateLettersOverlay() {
+  const questionIndex = getRandomQuestionIndex(
+    assessmentPart2.questions.length
+  );
   currentQuestionIndex = questionIndex;
 
   const lettersOverlay = document.querySelector(".letters-overlay-second");
   lettersOverlay.innerHTML = ""; // Clear existing content
 
   const soundContainers = document.querySelectorAll(".sound-container-second");
-  soundContainers.forEach((container, index) => {
-    const letter = assessmentPart2.questions[questionIndex].word[index];
-    const audioObj = assessmentPart2.questions[questionIndex].audio.find(
-      (obj) => obj.letter === letter
-    );
-    if (audioObj) {
-      container.dataset.audio = audioObj.audio;
-    } else {
-      console.error(`Audio object not found for letter: ${letter}`);
-    }
-  });
+  const question = assessmentPart2.questions[questionIndex];
 
-  if (questionIndex >= 0 && questionIndex < assessmentPart2.questions.length) {
-    const question = assessmentPart2.questions[questionIndex];
+  if (question) {
+    soundContainers.forEach((container, index) => {
+      const letter = question.word[index];
+      const audioObj = question.audio.find((obj) => obj.letter === letter);
+      if (audioObj) {
+        container.dataset.audio = audioObj.audio;
+      } else {
+        console.error(`Audio object not found for letter: ${letter}`);
+      }
+    });
+
     question.audio.forEach((letters) => {
       const letterElement = document.createElement("div");
       letterElement.classList.add("letter");
@@ -280,14 +332,12 @@ function populateLettersOverlay(questionIndex) {
     });
     addLetterClickListeners();
   } else {
-    console.error("Invalid question index");
+    console.error("Invalid question index or question data");
   }
 }
 
-// Example: Populate the letters overlay with the first question's letters
-populateLettersOverlay(
-  Math.floor(Math.random() * assessmentPart2.questions.length)
-);
+// Example: Populate the letters overlay with a random question's letters
+populateLettersOverlay();
 
 function handleSoundContainerClick() {
   const soundContainers = document.querySelectorAll(".sound-container-second");
@@ -336,7 +386,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function updateContent(pageNumber) {
-    console.log(pageNumber);
     switch (pageNumber) {
       case "1":
         document.querySelector(".image-container").style.display = "flex";
@@ -359,3 +408,19 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initial setup
   addPaginationListeners();
 });
+
+function playVideo(letter) {
+  const iframe = document.getElementById("popupVideo");
+
+  document.querySelector(".videoModal").style.display = "block";
+  if (letter === "E") {
+    iframe.src =
+      "https://drive.google.com/file/d/117hhY_keVrzp1qqy484ROf5yVc_4rZfQ/preview";
+  } else if (letter === "A") {
+    iframe.src =
+      "https://drive.google.com/file/d/1yMIN-3h9Gd7QyS8XK51UiC1wrfqv2KbI/preview";
+  } else {
+    iframe.src =
+      "https://drive.google.com/file/d/1yMIN-3h9Gd7QySUiC1wrfqv2KbI/";
+  }
+}
